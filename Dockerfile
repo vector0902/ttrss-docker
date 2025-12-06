@@ -7,30 +7,7 @@ RUN apk add --no-cache \
     postgresql-contrib \
     git \
     curl \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    libxml2-dev \
-    icu-dev \
-    zip \
-    unzip \
-    supervisor \
-    openrc
-
-# Install PHP extensions
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) \
-    gd \
-    pdo \
-    pdo_pgsql \
-    mysqli \
-    xml \
-    dom \
-    intl \
-    zip \
-    curl \
-    mbstring \
-    opcache
+    supervisor
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -59,9 +36,6 @@ COPY init-db.sh /init-db.sh
 
 # Make init script executable
 RUN chmod +x /init-db.sh
-
-# Initialize database and start services
-RUN /init-db.sh
 
 # Expose ports
 EXPOSE 7860 5432
